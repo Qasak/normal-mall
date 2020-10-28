@@ -1,8 +1,13 @@
 package com.imooc.pay.service.impl;
 
+import com.imooc.pay.dao.PayInfoMapper;
+import com.imooc.pay.enums.PayPlatformEnum;
+import com.imooc.pay.pojo.PayInfo;
 import com.imooc.pay.service.IPayService;
 import com.lly835.bestpay.config.WxPayConfig;
+import com.lly835.bestpay.enums.BestPayPlatformEnum;
 import com.lly835.bestpay.enums.BestPayTypeEnum;
+import com.lly835.bestpay.enums.OrderStatusEnum;
 import com.lly835.bestpay.model.PayRequest;
 import com.lly835.bestpay.model.PayResponse;
 import com.lly835.bestpay.service.BestPayService;
@@ -25,9 +30,17 @@ public class PayServiceImpl implements IPayService {
      */
     @Autowired
     private BestPayService bestPayService;
+    @Autowired
+    private PayInfoMapper payInfoMapper;
+
     @Override
     public PayResponse create(String orderId, BigDecimal amount, BestPayTypeEnum bestPayTypeEnum) {
-        //写入数据库
+        //把创建的订单号，金额，平台信息写入数据库
+        PayInfo payInfo = new PayInfo(Long.parseLong(orderId),
+                PayPlatformEnum.getByBestPayTypeEnum(bestPayTypeEnum).getCode(),
+                OrderStatusEnum.NOTPAY.name(),
+                amount);
+        payInfoMapper.insertSelective(payInfo);
         //重构点记录：
 //        WxPayConfig wxPayConfig = new WxPayConfig();
 //        wxPayConfig.setAppId("wxd898fcb01713c658");
@@ -58,7 +71,7 @@ public class PayServiceImpl implements IPayService {
         request.setPayTypeEnum(bestPayTypeEnum);
 
         PayResponse response = bestPayService.pay(request);
-        log.info("response={}", response);
+        log.info("发起支付response={}", response);
         return response;
     }
     // asyncNotify 接收来自支付宝/微信的支付成功异步通知
@@ -71,21 +84,48 @@ public class PayServiceImpl implements IPayService {
          * 1.为了防止伪造，需要签名校验，bestPayService已经做好了，调用之.
          */
         PayResponse payResponse = bestPayService.asyncNotify(notifyData);
-        log.info("payResponse={}", payResponse);
+        log.info("异步通知payResponse={}", payResponse);
         /**
          * 2.金额校验（从数据库查订单）
          */
+        PayInfo payInfo = payInfoMapper.selectByOrderNo(Long.parseLong(payResponse.getOrderId()));
+        // 严重:发出告警（直接发短信）
+        if(payInfo == null) {
+            throw new RuntimeException("通过OrderNo查询数据库的结果是null");
+        }
+        // 如果订单状态不是"已支付" -> 查询金额是否一致
+        if(!payInfo.getPlatformStatus().equals(OrderStatusEnum.SUCCESS.name())) {
+            if(payInfo.getPayAmount().compareTo(BigDecimal.valueOf(payResponse.getOrderAmount())) != 0) {
+                //告警
+                throw new RuntimeException("异步通知中的金额和数据库中不一致，orderNo = " + payResponse.getOrderId());
+            }
+            /**
+             * 金额一致->修改订单支付状态为成功
+             */
+            payInfo.setPlatformStatus(OrderStatusEnum.SUCCESS.name());
+            payInfo.setPlatformNumber(payResponse.getOutTradeNo());
+            // 令其能自动更新时间
+            payInfo.setUpdateTime(null);
+            payInfoMapper.updateByPrimaryKeySelective(payInfo);
+        }
 
-        /**
-         * 3.修改订单支付状态
-         */
 
         /**
          * 4.告诉微信不要再通知了
          */
-        return "<xml>\n" +
-                "  <return_code><![CDATA[SUCCESS]]></return_code>\n" +
-                "  <return_msg><![CDATA[OK]]></return_msg>\n" +
-                "</xml>";
+        if(payResponse.getPayPlatformEnum() == BestPayPlatformEnum.WX) {
+            return "<xml>\n" +
+                    "  <return_code><![CDATA[SUCCESS]]></return_code>\n" +
+                    "  <return_msg><![CDATA[OK]]></return_msg>\n" +
+                    "</xml>";
+        } else if(payResponse.getPayPlatformEnum() == BestPayPlatformEnum.ALIPAY) {
+            return "success";
+        }
+        throw  new RuntimeException("异步通知中不支持的支付平台");
+    }
+
+    @Override
+    public PayInfo queryByOrderId(String orderId) {
+        return payInfoMapper.selectByOrderNo(Long.parseLong(orderId));
     }
 }

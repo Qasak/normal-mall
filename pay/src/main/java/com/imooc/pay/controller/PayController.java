@@ -1,6 +1,8 @@
 package com.imooc.pay.controller;
 
+import com.imooc.pay.pojo.PayInfo;
 import com.imooc.pay.service.impl.PayServiceImpl;
+import com.lly835.bestpay.config.WxPayConfig;
 import com.lly835.bestpay.enums.BestPayTypeEnum;
 import com.lly835.bestpay.model.PayResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/pay")
 /**
  * @author:Wangjs
@@ -22,6 +24,8 @@ public class PayController {
 
     @Autowired
     PayServiceImpl payServiceImpl;
+    @Autowired
+    WxPayConfig wxPayConfig;
     @GetMapping("create")
     public ModelAndView create(@RequestParam("orderId") String orderId,
                                @RequestParam("amount") BigDecimal amount,
@@ -31,6 +35,8 @@ public class PayController {
         // 支付方式不同，渲染方式不同：WX_NATIVE使用codeUrl, ALIPAY_PC使用body
         if(payType == BestPayTypeEnum.WXPAY_NATIVE) {
             map.put("codeUrl", payResponse.getCodeUrl());
+            map.put("orderId", orderId);
+            map.put("returnUrl", wxPayConfig.getReturnUrl());
             return new ModelAndView("createForWxNative", map);
         } else if(payType == BestPayTypeEnum.ALIPAY_PC) {
             map.put("body", payResponse.getBody());
@@ -46,4 +52,9 @@ public class PayController {
         return payServiceImpl.asyncNotify(notifyData);
     }
 
+    @GetMapping("/quereByOrderId")
+    public PayInfo queryByOrderId(@RequestParam String orderId) {
+        log.info("查询支付记录");
+        return payServiceImpl.queryByOrderId(orderId);
+    }
 }

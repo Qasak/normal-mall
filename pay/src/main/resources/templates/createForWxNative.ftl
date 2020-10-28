@@ -6,11 +6,32 @@
 </head>
 <body>
 <div id="MyQrcode"></div>
+<div id="orderId"></div>
+<div id="returnUrl"></div>
 <script src="https://cdn.bootcss.com/jquery/1.5.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 <script>
     jQuery('#MyQrcode').qrcode({
         text	: "${codeUrl}"
+    });
+
+    $(function () {
+        //定时器，两秒查询一次
+        setInterval(function () {
+            console.log("开始查询支付状态")
+            $.ajax({
+                url:'/pay/quereByOrderId',
+                data:{
+                    'orderId':'12223421'
+                },
+                success: function(result) {
+                    console.log(result)
+                },
+                error: function(result) {
+                    alert(result)
+                }
+            })
+        }, 2000)
     });
 </script>
 </body>

@@ -13,17 +13,11 @@ public class BestPayConfig {
     // 加上Bean: Spring容器管理功能：项目启动时执行下面的代码
     // 返回了一个BestPayService实例
     @Bean
-    public BestPayService bestPayService() {
-        WxPayConfig wxPayConfig = new WxPayConfig();
-        wxPayConfig.setAppId("wxd898fcb01713c658");
-        wxPayConfig.setMchId("1483469312");
-        wxPayConfig.setMchKey("098F6BCD4621D373CADE4E832627B4F6");
-        wxPayConfig.setNotifyUrl("http://wongjs.natapp1.cc/pay/notify");
-
+    public BestPayService bestPayService(WxPayConfig wxPayConfig) {
         AliPayConfig aliPayConfig = new AliPayConfig();
-        aliPayConfig.setAppId("2021001196681841");
-        aliPayConfig.setPrivateKey("MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCed2ZwS7F+PVXncaE6LvfRCRmRgekLUCA5LBLJoxxmMgCN9GQisX9oC/4mWNKqwNsa3X6KsxHNGqNvsdPWOmb2NWci9IWcVU6jOtCG8M7p01L8eQKFbTgrx1LLojEqYDeQEKETCuiy59jmiNIPH0kbGUn95PbzhX3CYDfFhO+ROTZMMJeBAJg2b07pMxqxL/HVM07H673shfb8M3iDignYR1qtTHKd7PuWR159I4ztzJUbPpSEB8mxzbGMU37QnWodJL6IGWkpgkgiN5ItbkdmbaY22rn7n7tHKWXEFdy+LUPBSjqoH2cR0MVItYTfyQv4AKmntXVqQk04XJNmNCWlAgMBAAECggEARPQFkhWNvTWpPJVYJ34qfT3tb0BNDIwoCVihMDYWdG2LijlunR4JJ1gYlc0Olhhm/rCkkGvM8ieGOGLzn4M4LCgeobourVD9b892z1DXaC15LbzmGPLmfz4zS8JejGbjpn9l52hWywpRejbM2KGvaOg/JwhLYLmUeFDv07W9nL3N/6Tvjk9LQXeuK1LnCSDc3utrpVoJvzM5dGTXPR5vhHJrknQvzQC4b1mEc1miptaE2DX6/mUy82nIDGbA0iTMjqFc4/+4EhHHfGcfutzzO31PNN5rxjOHorms4jcV4t+GmiJdsmb+I4QkTV2XEzo9dreS04jbYnNB6mLjmTkN/QKBgQDQAdFNXUYK+L1bM2wbuF3IzodvzBBCEiM9ORNx7PuIiLuS0q4lEUv/kDk+sq22LCORnjiqAEyrr9XqL1Vi7ndT4r96MHFJiXUBrm3RXPrdtTLHjXCGOu8OO5mafp5scZohvtPc4kwqCS9GIIDWD6gIy6pIdFZLvNXBiva8oYrCPwKBgQDDB2dUz6aJZFeVMKxW+WV5eMkhnSknHbbTgw/Vl2mTm2vJPx6C+GmHa2FRGCNt2IhG6Kj+BLieVHFjLVpYvXZ4cVYOGXnRq4ILWro/n/o0A6cgmyBsLVrv54HB4d2rQtcBI3ZlDiXARjz5Bo+CXCs9dj7dIOrrRlxyRnxvN2IXGwKBgBaSm+wRWzCFncbv5aN8dnD8OKZhNsJ0xW43a2zJkuJWNETSqCNNpTmupQewzDkgwRtkWDHapndbNZOcX1/FER4BVVYlO6YHTLNKApDdzjuRFlmhd7yZWKfqv9iMNRT/nwJaexNVW36UUJUDofeY61tI/smuFk9RxsCiG/SMc0pxAoGBAJ8s/sAwzpqaRAVm+XHvEUwoMfh2Xe0oClztPlI0xx2LH1jcZFm+x9qX4JCgY+I2dVtybuMMFWZcQ0MP9AozcGrzDapqTou7MGN2BEcDmeE0DgbFtZu1FOBzEeudHh+2aObr+6iU+GjKqt8Q5LYf5ca/KKWwRSwLfE5kixD2od97AoGAVBWWRiIielcY+bfJaVP7TzAcfGqCkkiAT31/6V9wNVosTvezOM/Cng0mYxFtIkrvt+ll4wB+/r8qxYQM/y3HXjZGFwqGHxYtpmXipb/RSftX9+S8Q8wkT/N5knh7oq+6AV7jULR2yo/VCMbSrOg6NY2VpVPZyXoVpU1xF9X/Qn0=");
-        aliPayConfig.setAliPayPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAofgaLCRPA4IsciNv1QfENt5Nm+hGRhyC0cags6ZrbXpIRLDrNIod+ouKOSyMt1q7wBaKz+2ItR/diUmKkVLXjMaUfZyzc7QEowL50ZsUIM/9TupIung86wqbRgPOyOw9tjlnh0ypPDVsv5evJi7v6/z5ux90rAWzAWt85N5IQRuGO1fz8Z3ZX3Mkyj0okz6PrgQYV94UzlTqQ5bG7UE0oUT3ESn+NedQIA4S51+x/sUwjy3EwpW12B6TLsFpinHaSgssQ4aAGxDt346AY1XL7cO+cjoc8XBhgLrtsn5mIBCuiiMhT9ysBxLPuD3c/cHQ62DRnpy2eosO9Qlz7oN8sQIDAQAB");
+        aliPayConfig.setAppId("2018062960540016");
+        aliPayConfig.setPrivateKey("MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDUcbUUBaTJA4ngFx1xED2WHrkS4YCi3BRDPu/qU+MXj7VNy/ip+VKSK9aGPd2dRswkt/4DOoOxnnesJDcve+2W9y2gPoOdSVjGlEwTE6MqeB5f3l+RO9Kcb2zL4JwCRxlE0HHLeRdWtnmbelh1rg8zTFwGnoi1pbQajAT/FGDFqIpdI6FrEYbyeR/VNxFXIGK16Z7gfnWRnS4TP93O5ckcuaAcE8tqW16G7u41bKsnsv2149mucBM2hFSEVD/KcGYYke3pD7VpQdk0+WhxITSsa5I8DfSFRKokN7iJoKjYWjI4gN3fxFWLbymeIumoOWdJflwYI5oL+GdVIHfQ0ETLAgMBAAECggEBALaqurdnjuQkfcXIOlGAVGQjMKFycmgWcfnMQQAsdyRINe2Zx8tnDL+QoBm3UjmsqVWdOvVNt/TevCmwzh6vIYBgMsQJXKO+cG33D16L0Q1wUTW/gE7hsFtAV70J+TrgJXMNA/ufuBigN/oe/bbaHknOi4ZJhGUkALOe16D4xajNjHcYdvkfw5Zkv9nAt+GjFphe1lt35KIx6ahFzMcnzzHYy4ezDFdQWPkT7CqrL8Nh9KPm6Sjbzw2JP3RH91OU1q44gPj7yyLTs1oxt4gEqOgVnczJWXoH+eKRmxRoIvodnB4kf1W9LTzAc4Qs7OneDccvhrOoTD3MGhqW0poXZFkCgYEA6dxBCLnU5oeoctoltnh42DXCzEv/M/gkv9HMY/FFnuM6e0qU5EcFjQtTPRRW1S45ctZaHHhpGppHF7RG+okdALj4x2OC1NG9DL4HboVW3CJ4TzmEeZRkR+LWRWw7FA8eXefDBTC4ojAwqkmbvYP3dm6FjSfNBGYs43Wm6qKTcB0CgYEA6I5rPmAv6rB1BBXF8riNhuoDntbHFHOC9kCwuVJooDBBnxXNCqA9mTdnwE8hjgCgbO5lQkeeIRYiZwFYdCLPW78j6Np5CaX0/ZxcVSUQBFYc3d0e3po+rqpX6BGOj7qGhzDXvAs+HScu7ERy0Kbq6b/EbuLlR3oCKIGncGIaxAcCgYBJyWrjm+6mxgrKIjZf+mb2oQ/Tce8VsKe3tjRtHEVBOqTLHd8Yn6gKtpYO4Yn8PVd2+lb4QK247RCdVA5JIlX6UmJ8VtOC3qJtkM+7eWrMjjuzk4xO6Bkz7Uh6IwoI7DRCoMuRqau30MiqEguHoknEHl8ZCIPRbYOgSRDfW2h1qQKBgF9ODnFPphN+IVZ9PdRNAeMqgDVWO9wLwr38oPAx76LGY/44RwF1zgi+hgxv4YZ6h0RdJq5U/1773TltebyOj4BAAw1oi3YCxzYwID7co4XDbK0X85CykcGvGbuHhm8st/krcR4lVV1JM5esLYmI/nixGGWBIwl53OyQxffunJ19AoGBAOX9cBWFIWh5EHVXYvW90HRBQoo1AYtsdrxTedqrij6cWQms6ACeQZPd5O0V6/Lhz3Lw5NRnUl9MbzwOC7BBSBvhWwNzBOzFnaoOvBABa5nFZsdF5jSI3LJHbnxmMvxnKjCgogSGf+hfgR042b/WKDDBEA965MQJ59tCVhALD81z");
+        aliPayConfig.setAliPayPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtojdtkETo4OEsQLeyyPwtWK9ZqYJANq6jjXC74vk9n/r88yW577y7VdxcK9X/F/wvR7D8of7lndYdhg6xZro0eO2skPZTU+A549J7tfzahVbIBAS+x1WPFJwPtVrfBBvkwHL8PT+YnMcxKyBxOa6wo8fzJs1NgU1+qnDCpwUFyv59GUfdzBvTPL1fY3ZzvRHFHbapevVltbO/jNV0thb8dafmcJXl8lnjQy3XlH3eTH28tlVfqickacfRl/WSD8WN3dGgF7dTDKYfSR7YB7jsHe6VzoHM3UnD9/yQbi/Z3ZrL7yOxEjq4tfrKlZIW7ZCoUpOU4QdPIRhLeC6nWyGrQIDAQAB");
         aliPayConfig.setNotifyUrl("http://wongjs.natapp1.cc/pay/notify");
         aliPayConfig.setReturnUrl("http://127.0.0.1");
 
@@ -31,6 +25,16 @@ public class BestPayConfig {
         bestPayService.setWxPayConfig(wxPayConfig);
         bestPayService.setAliPayConfig(aliPayConfig);
         return bestPayService;
+    }
+    @Bean
+    public WxPayConfig wxPayConfig () {
+        WxPayConfig wxPayConfig = new WxPayConfig();
+        wxPayConfig.setAppId("wxd898fcb01713c658");
+        wxPayConfig.setMchId("1483469312");
+        wxPayConfig.setMchKey("098F6BCD4621D373CADE4E832627B4F6");
+        wxPayConfig.setNotifyUrl("http://wongjs.natapp1.cc/pay/notify");
+        wxPayConfig.setReturnUrl("http://127.0.0.1");
+        return wxPayConfig;
     }
 
 }

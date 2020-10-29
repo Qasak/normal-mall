@@ -6,8 +6,8 @@
 </head>
 <body>
 <div id="MyQrcode"></div>
-<div id="orderId"></div>
-<div id="returnUrl"></div>
+<div id="orderId">${orderId}</div>
+<div id="returnUrl">${returnUrl}</div>
 <script src="https://cdn.bootcss.com/jquery/1.5.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 <script>
@@ -22,10 +22,14 @@
             $.ajax({
                 url:'/pay/quereByOrderId',
                 data:{
-                    'orderId':'12223421'
+                    'orderId':$('#orderId').text()
                 },
                 success: function(result) {
                     console.log(result)
+                    if(result.platformStatus != null &&
+                        result.platformStatus === 'SUCCESS') {
+                        location.href = $('#returnUrl').text()
+                    }
                 },
                 error: function(result) {
                     alert(result)

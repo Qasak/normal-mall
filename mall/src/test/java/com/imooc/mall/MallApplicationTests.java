@@ -6,11 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 
 //@RunWith(SpringRunner.class)
 @MapperScan(basePackages = "com.imooc.mall.dao")
+
+@ComponentScan(basePackages = "com.imooc.mall.service.impl")
 @SpringBootTest
-class MallApplicationTests {
+public class MallApplicationTests {
     @Autowired
     private CategoryMapper categoryMapper;
     @Test

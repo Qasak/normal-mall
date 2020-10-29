@@ -14,8 +14,9 @@ public class BestPayConfig {
     // 加上Bean: Spring容器管理功能：项目启动时执行下面的代码
     // 返回了一个BestPayService实例
     @Autowired
-    WxAccountConfig wxAccountConfig;
-    AliPayAccountConfig aliPayAccountConfig;
+    private WxAccountConfig wxAccountConfig;
+    @Autowired
+    private AliPayAccountConfig aliPayAccountConfig;
     @Bean
     public BestPayService bestPayService(WxPayConfig wxPayConfig) {
         AliPayConfig aliPayConfig = new AliPayConfig();

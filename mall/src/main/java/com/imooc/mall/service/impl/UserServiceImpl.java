@@ -50,7 +50,7 @@ public class UserServiceImpl implements IUserService {
         return ResponseVo.success();
     }
     @Override
-    public ResponseVo<User> login(String username, String password) {
+    public ResponseVo login(String username, String password) {
         // 数据库中username有索引，只用一个字段查
         User user = userMapper.selectByUsername(username);
         if(user == null) {
@@ -62,6 +62,7 @@ public class UserServiceImpl implements IUserService {
             // 密码错误： 用户名或密码错误
             return ResponseVo.error(USERNAME_OR_PASSWORD_ERROR);
         }
+        // 不要向前端返回用户密码
         user.setPassword("");
         return ResponseVo.success(user);
 

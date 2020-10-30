@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2020/10/30 10:50
  */
 @Data
-public class UserForm {
+public class UserRegisterForm {
     // 注解：不能是空白
     // @NotBlank用于String:不能是空格
     // @NotNull:

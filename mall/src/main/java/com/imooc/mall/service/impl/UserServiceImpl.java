@@ -1,5 +1,6 @@
 package com.imooc.mall.service.impl;
 
+import com.imooc.mall.dao.CategoryMapper;
 import com.imooc.mall.dao.UserMapper;
 import com.imooc.mall.enums.RoleEnum;
 import com.imooc.mall.pojo.User;
@@ -20,11 +21,15 @@ import static com.imooc.mall.enums.ResponseEnum.*;
  */
 @Service
 public class UserServiceImpl implements IUserService {
+
+
     /**
      * 注册
      */
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
     @Override
     public ResponseVo<User> register(User user) {
         // 设置用户角色，否则数据库报错
@@ -65,6 +70,5 @@ public class UserServiceImpl implements IUserService {
         // 不要向前端返回用户密码
         user.setPassword("");
         return ResponseVo.success(user);
-
     }
 }

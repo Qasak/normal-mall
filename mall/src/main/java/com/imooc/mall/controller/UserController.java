@@ -77,7 +77,6 @@ public class UserController {
         User user = (User) session.getAttribute(CURRENT_USER);
         return ResponseVo.success(user);
     }
-    // TODO 判断登录状态，拦截器
     /**
      *getSessionTimeoutInMinutes:过期限制至少一分钟
      */

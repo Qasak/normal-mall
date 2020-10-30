@@ -13,6 +13,7 @@ public enum ResponseEnum {
     USERNAME_ALREADY_EXIST(2, "用户已经存在"),
     PARAM_ERROR(3, "注册参数错误"),
     EMAIL_ALREADY_EXIST(4, "邮箱已经存在"),
+    NO_CATEGORY(5,"没有该商品类目"),
     USERNAME_OR_PASSWORD_ERROR(11, "用户名或密码错误"),
     NEED_LOGIN(10, "用户未登录，无法获取当前用户信息"),
 

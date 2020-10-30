@@ -10,8 +10,9 @@ public enum ResponseEnum {
     // 所有的成功
     SUCCESS(0, "成功"),
     PASSWAORD_ERROR(1, "密码错误"),
-    USER_ALREADY_EXIST(2, "用户已经存在"),
+    USER_NAME_ALREADY_EXIST(2, "用户已经存在"),
     PARAM_ERROR(3, "注册参数错误"),
+    USER_EMAIL_ALREADY_EXIST(4, "邮箱已经存在"),
     NEED_LOGIN(10, "用户未登录，无法获取当前用户信息"),
 
     ;

@@ -1,9 +1,12 @@
 package com.imooc.mall.controller;
 
-import com.imooc.mall.enums.ResponseEnum;
 import com.imooc.mall.form.UserForm;
+import com.imooc.mall.pojo.User;
+import com.imooc.mall.service.impl.UserServiceImpl;
 import com.imooc.mall.vo.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +26,8 @@ import static com.imooc.mall.enums.ResponseEnum.PARAM_ERROR;
 @RequestMapping("/user")
 @Slf4j
 public class UserController {
+    @Autowired
+    UserServiceImpl userService;
 
     @PostMapping("/register")
     // urlencode方式接收变量1：变量名与表单变量名不一致时，可以写 @RequestParam(value = "表单中的名字")
@@ -44,7 +49,11 @@ public class UserController {
                     bindingResult.getFieldError().getDefaultMessage());
             return ResponseVo.error(PARAM_ERROR, bindingResult);
         }
-        log.info("username:{}", userForm.getUsername());
-        return ResponseVo.error(ResponseEnum.NEED_LOGIN);
+        User user = new User();
+        BeanUtils.copyProperties(userForm, user);
+        // dto
+        return userService.register(user);
+
+
     }
 }

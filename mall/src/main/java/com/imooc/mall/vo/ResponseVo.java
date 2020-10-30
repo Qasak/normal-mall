@@ -48,6 +48,7 @@ import org.springframework.validation.BindingResult;
 public class ResponseVo<T> {
     private Integer status;
     private String msg;
+    //data可要可不要，通过@JsonInclude(value = JsonInclude.Include.NON_NULL)注解，当其为null时，直接不返回
     private T data;
 
     public ResponseVo(Integer status, String msg) {

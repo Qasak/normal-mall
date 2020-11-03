@@ -15,6 +15,8 @@ public enum ResponseEnum {
     EMAIL_ALREADY_EXIST(4, "邮箱已经存在"),
     NO_CATEGORY(5,"没有该商品类目"),
     USERNAME_OR_PASSWORD_ERROR(11, "用户名或密码错误"),
+    PRODUCT_OFFSALE_OR_DELETE(12, "商品下架或删除"),
+
     NEED_LOGIN(10, "用户未登录，无法获取当前用户信息"),
 
     ;

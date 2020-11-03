@@ -3,14 +3,15 @@ package com.imooc.mall.vo;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author Wangjs
  * @version 1.0
- * @date 2020/10/31 17:08
+ * @date 2020/11/3 17:04
  */
 @Data
-public class ProductVo {
+public class ProductDetailVo {
     private Integer id;
 
     private Integer categoryId;
@@ -21,8 +22,17 @@ public class ProductVo {
 
     private String mainImage;
 
+    private String subImages;
+
+    private String detail;
+
     private BigDecimal price;
+
+    private Integer stock;
 
     private Integer status;
 
+    private Date createTime;
+
+    private Date updateTime;
 }

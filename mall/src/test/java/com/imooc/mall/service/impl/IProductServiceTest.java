@@ -1,5 +1,9 @@
 package com.imooc.mall.service.impl;
 
+import com.imooc.mall.enums.ResponseEnum;
+import com.imooc.mall.vo.ProductDetailVo;
+import com.imooc.mall.vo.ResponseVo;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,12 @@ public class IProductServiceTest {
 
     @Test
     public void list() {
-        productService.list(null, 0, 0);
+        productService.list(null, 1, 2);
+    }
+
+    @Test
+    public void detail() {
+        ResponseVo<ProductDetailVo> responseVo = productService.detail(26);
+        Assert.assertEquals(ResponseEnum.SUCCESS.getCode(), responseVo.getStatus());
     }
 }

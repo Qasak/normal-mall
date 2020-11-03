@@ -61,7 +61,7 @@ public class ProductServiceImpl implements IProductService {
         Product product = productMapper.selectByPrimaryKey(productId);
         if(product.getStatus().equals(OFF_SALE.getCode())
                 || product.getStatus().equals(DELETE.getCode())) {
-            return ResponseVo.error(ResponseEnum.PRODUCT_OFFSALE_OR_DELETE);
+            return ResponseVo.error(ResponseEnum.PRODUCT_OFF_SALE_OR_DELETE);
         }
         ProductDetailVo productDetailVo = new ProductDetailVo();
         BeanUtils.copyProperties(product, productDetailVo);

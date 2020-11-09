@@ -9,6 +9,10 @@ import java.math.BigDecimal;
  * @version 1.0
  * @date 2020/11/3 17:54
  */
+
+/**
+ * 返给前端的单个购物车中的物品
+ */
 @Data
 public class CartProductVo {
 

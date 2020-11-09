@@ -41,10 +41,20 @@ public class CartServiceImpl implements ICartService {
 
     private Gson gson = new Gson();
 
+    /**
+     * 向购物车添加产品
+     * productId
+     * selected: true
+     *
+     *
+     * @param uid: 用户id
+     * @param form: 两个变量：productId： 产品id, selected：是否选中
+     * @return
+     */
     @Override
     public ResponseVo<CartVo> add(Integer uid, CartAddForm form) {
         Integer quantity = 1;
-
+        // 通过post请求转入的表单拿到产品id, 根据id从数据库取product对象
         Product product = productMapper.selectByPrimaryKey(form.getProductId());
 
         //商品是否存在
@@ -64,11 +74,14 @@ public class CartServiceImpl implements ICartService {
 
         //写入到redis
         //key: cart_1
+        // redisTemplate.opsForHash()操作redis哈希表的对象，支持get/put/entries等操作
         HashOperations<String, String, String> opsForHash = redisTemplate.opsForHash();
-        String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);
+        // 拼接哈希表名
+        String redisHashName  = String.format(CART_REDIS_KEY_TEMPLATE, uid);
 
         Cart cart;
-        String value = opsForHash.get(redisKey, String.valueOf(product.getId()));
+        // 在redis哈希表中通过传入的产品id取到表单, key:产品id, value:cart对象的json字符串
+        String value = opsForHash.get(redisHashName, String.valueOf(product.getId()));
         if (StringUtils.isEmpty(value)) {
             //没有该商品, 新增
             cart = new Cart(product.getId(), quantity, form.getSelected());
@@ -77,25 +90,27 @@ public class CartServiceImpl implements ICartService {
             cart = gson.fromJson(value, Cart.class);
             cart.setQuantity(cart.getQuantity() + quantity);
         }
-
-        opsForHash.put(redisKey,
+        // 购物车更新后重新写入redis哈希表
+        opsForHash.put(redisHashName,
                 String.valueOf(product.getId()),
                 gson.toJson(cart));
-
+        //返回给前端的CartVo json字符串
         return list(uid);
     }
 
     @Override
     public ResponseVo<CartVo> list(Integer uid) {
         HashOperations<String, String, String> opsForHash = redisTemplate.opsForHash();
-        String redisKey  = String.format(CART_REDIS_KEY_TEMPLATE, uid);
-        Map<String, String> entries = opsForHash.entries(redisKey);
+        String redisHashName  = String.format(CART_REDIS_KEY_TEMPLATE, uid);
+        // 拿到redis hash表所有条目
+        Map<String, String> entries = opsForHash.entries(redisHashName);
 
         boolean selectAll = true;
         Integer cartTotalQuantity = 0;
         BigDecimal cartTotalPrice = BigDecimal.ZERO;
         CartVo cartVo = new CartVo();
         List<CartProductVo> cartProductVoList = new ArrayList<>();
+        // 扫哈希表所有条目
         for (Map.Entry<String, String> entry : entries.entrySet()) {
             Integer productId = Integer.valueOf(entry.getKey());
             Cart cart = gson.fromJson(entry.getValue(), Cart.class);
@@ -103,6 +118,7 @@ public class CartServiceImpl implements ICartService {
             //TODO 需要优化，使用mysql里的in
             Product product = productMapper.selectByPrimaryKey(productId);
             if (product != null) {
+                // 初始化购物车中的单个物品
                 CartProductVo cartProductVo = new CartProductVo(productId,
                         cart.getQuantity(),
                         product.getName(),

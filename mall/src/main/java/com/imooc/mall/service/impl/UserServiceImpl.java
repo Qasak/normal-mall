@@ -77,12 +77,4 @@ public class UserServiceImpl implements IUserService {
     private void error() {
         throw new RuntimeException("意外错误");
     }
-
-    public static void main(String[] args) {
-        String passWord = "admin";
-        // 21232F297A57A5A743894A0E4A801FC3
-
-        // 21232f297a57a5a743894a0e4a801fc3
-        System.out.println(DigestUtils.md5DigestAsHex(passWord.getBytes(StandardCharsets.UTF_8)));
-    }
 }

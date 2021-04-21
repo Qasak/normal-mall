@@ -88,8 +88,10 @@
                     <overwrite>true</overwrite>
                 </configuration>
             </plugin>
+
         </plugins>
         <finalName>mall</finalName>
+<!--运行命令：        java -jar -Dspring.profiles.active=prod-->
     </build>
 
 </project>

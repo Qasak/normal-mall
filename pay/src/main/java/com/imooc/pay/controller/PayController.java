@@ -14,47 +14,53 @@ import org.springframework.web.servlet.ModelAndView;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-@Slf4j
-@RestController
-@RequestMapping("/pay")
+
 /**
- * @author:Wangjs
+ * Created by 廖师兄
  */
+@Controller
+@RequestMapping("/pay")
+@Slf4j
 public class PayController {
 
-    @Autowired
-    PayServiceImpl payServiceImpl;
-    @Autowired
-    WxPayConfig wxPayConfig;
-    @GetMapping("create")
-    public ModelAndView create(@RequestParam("orderId") String orderId,
-                               @RequestParam("amount") BigDecimal amount,
-                               @RequestParam("payType") BestPayTypeEnum payType){
-        PayResponse payResponse = payServiceImpl.create(orderId, amount, payType);
-        Map<String, String> map = new HashMap<>();
-        // 支付方式不同，渲染方式不同：WX_NATIVE使用codeUrl, ALIPAY_PC使用body
-        if(payType == BestPayTypeEnum.WXPAY_NATIVE) {
-            map.put("codeUrl", payResponse.getCodeUrl());
-            map.put("orderId", orderId);
-            map.put("returnUrl", wxPayConfig.getReturnUrl());
-            return new ModelAndView("createForWxNative", map);
-        } else if(payType == BestPayTypeEnum.ALIPAY_PC) {
-            map.put("body", payResponse.getBody());
-            return new ModelAndView("createForAlipayPc", map);
-        }
-        throw new RuntimeException("暂不支持的类型");
-    }
+	@Autowired
+	private PayServiceImpl payService;
 
-    @PostMapping("/notify")
-    @ResponseBody
-    public String asyncNotify(@RequestBody String notifyData) {
-//        log.info("notifyData={}", notifyData);
-        return payServiceImpl.asyncNotify(notifyData);
-    }
+	@Autowired
+	private WxPayConfig wxPayConfig;
 
-    @GetMapping("/quereByOrderId")
-    public PayInfo queryByOrderId(@RequestParam String orderId) {
-        log.info("查询支付记录");
-        return payServiceImpl.queryByOrderId(orderId);
-    }
+	@GetMapping("/create")
+	public ModelAndView create(@RequestParam("orderId") String orderId,
+							   @RequestParam("amount") BigDecimal amount,
+							   @RequestParam("payType") BestPayTypeEnum bestPayTypeEnum
+							   ) {
+		PayResponse response = payService.create(orderId, amount, bestPayTypeEnum);
+
+		//支付方式不同，渲染就不同, WXPAY_NATIVE使用codeUrl,  ALIPAY_PC使用body
+		Map<String, String> map = new HashMap<>();
+		if (bestPayTypeEnum == BestPayTypeEnum.WXPAY_NATIVE) {
+			map.put("codeUrl", response.getCodeUrl());
+			map.put("orderId", orderId);
+			map.put("returnUrl", wxPayConfig.getReturnUrl());
+			return new ModelAndView("createForWxNative", map);
+		}else if (bestPayTypeEnum == BestPayTypeEnum.ALIPAY_PC) {
+			map.put("body", response.getBody());
+			return new ModelAndView("createForAlipayPc", map);
+		}
+
+		throw new RuntimeException("暂不支持的支付类型");
+	}
+
+	@PostMapping("/notify")
+	@ResponseBody
+	public String asyncNotify(@RequestBody String notifyData) {
+		return payService.asyncNotify(notifyData);
+	}
+
+	@GetMapping("/queryByOrderId")
+	@ResponseBody
+	public PayInfo queryByOrderId(@RequestParam String orderId) {
+		log.info("查询支付记录...");
+		return payService.queryByOrderId(orderId);
+	}
 }

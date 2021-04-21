@@ -5,17 +5,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/10/29 11:35
+ * Created by 廖师兄
  */
 @Component
 @ConfigurationProperties(prefix = "wx")
 @Data
 public class WxAccountConfig {
-    private String appId;
-    private String mchId;
-    private String mchKey;
-    private String notifyUrl;
-    private String returnUrl;
+
+	private String appId;
+
+	private String mchId;
+
+	private String mchKey;
+
+	private String notifyUrl;
+
+	private String returnUrl;
 }

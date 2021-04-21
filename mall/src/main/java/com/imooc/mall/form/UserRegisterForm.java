@@ -5,20 +5,20 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/10/30 10:50
+ * Created by 廖师兄
  */
 @Data
 public class UserRegisterForm {
-    // 注解：不能是空白
-    // @NotBlank用于String:不能是空格
-    // @NotNull:
-    // @NotEmpty: 用于集合：数组是不是为空
-    @NotBlank()
+
+    //@NotBlank 用于 String 判断空格
+    //@NotEmpty 用于集合
+    //@NotNull
+    @NotBlank
     private String username;
-    @NotBlank()
+
+    @NotBlank
     private String password;
-    @NotBlank()
+
+    @NotBlank
     private String email;
 }

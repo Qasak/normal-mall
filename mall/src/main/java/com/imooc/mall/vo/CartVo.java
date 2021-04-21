@@ -6,14 +6,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * 返给前端的CartVo
- * @author Wangjs
- * @version 1.0
- * @date 2020/11/3 17:53
- */
-
-/**
- *
+ * 购物车
+ * Created by 廖师兄
  */
 @Data
 public class CartVo {
@@ -26,4 +20,3 @@ public class CartVo {
 
     private Integer cartTotalQuantity;
 }
-

@@ -3,9 +3,7 @@ package com.imooc.mall.form;
 import lombok.Data;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/11/3 18:08
+ * Created by 廖师兄
  */
 @Data
 public class CartUpdateForm {

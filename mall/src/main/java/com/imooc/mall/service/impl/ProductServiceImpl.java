@@ -3,8 +3,8 @@ package com.imooc.mall.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imooc.mall.dao.ProductMapper;
-import com.imooc.mall.enums.ResponseEnum;
 import com.imooc.mall.pojo.Product;
+import com.imooc.mall.service.ICategoryService;
 import com.imooc.mall.service.IProductService;
 import com.imooc.mall.vo.ProductDetailVo;
 import com.imooc.mall.vo.ProductVo;
@@ -19,19 +19,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.imooc.mall.enums.ProductStatusEnum.DELETE;
-import static com.imooc.mall.enums.ProductStatusEnum.OFF_SALE;
+import static com.imooc.mall.enums.ProductStatusEnum.*;
+import static com.imooc.mall.enums.ResponseEnum.PRODUCT_OFF_SALE_OR_DELETE;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/10/31 17:23
+ * Created by 廖师兄
  */
 @Service
 @Slf4j
 public class ProductServiceImpl implements IProductService {
+
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private ICategoryService categoryService;
 
     @Autowired
     private ProductMapper productMapper;
@@ -39,10 +38,11 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ResponseVo<PageInfo> list(Integer categoryId, Integer pageNum, Integer pageSize) {
         Set<Integer> categoryIdSet = new HashSet<>();
-        if(categoryId != null) {
+        if (categoryId != null) {
             categoryService.findSubCategoryId(categoryId, categoryIdSet);
             categoryIdSet.add(categoryId);
         }
+
         PageHelper.startPage(pageNum, pageSize);
         List<Product> productList = productMapper.selectByCategoryIdSet(categoryIdSet);
         List<ProductVo> productVoList = productList.stream()
@@ -50,7 +50,9 @@ public class ProductServiceImpl implements IProductService {
                     ProductVo productVo = new ProductVo();
                     BeanUtils.copyProperties(e, productVo);
                     return productVo;
-                }).collect(Collectors.toList());
+                })
+                .collect(Collectors.toList());
+
         PageInfo pageInfo = new PageInfo<>(productList);
         pageInfo.setList(productVoList);
         return ResponseVo.success(pageInfo);
@@ -59,13 +61,17 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ResponseVo<ProductDetailVo> detail(Integer productId) {
         Product product = productMapper.selectByPrimaryKey(productId);
-        if(product.getStatus().equals(OFF_SALE.getCode())
+
+        //只对确定性条件判断
+        if (product.getStatus().equals(OFF_SALE.getCode())
                 || product.getStatus().equals(DELETE.getCode())) {
-            return ResponseVo.error(ResponseEnum.PRODUCT_OFF_SALE_OR_DELETE);
+            return ResponseVo.error(PRODUCT_OFF_SALE_OR_DELETE);
         }
+
         ProductDetailVo productDetailVo = new ProductDetailVo();
         BeanUtils.copyProperties(product, productDetailVo);
-        productDetailVo.setStock(productDetailVo.getStock() > 100 ? 100 : productDetailVo.getStock());
+        //敏感数据处理
+        productDetailVo.setStock(product.getStock() > 100 ? 100 : product.getStock());
         return ResponseVo.success(productDetailVo);
     }
 }

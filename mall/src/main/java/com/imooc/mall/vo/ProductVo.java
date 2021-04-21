@@ -5,12 +5,11 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/10/31 17:08
+ * Created by 廖师兄
  */
 @Data
 public class ProductVo {
+
     private Integer id;
 
     private Integer categoryId;
@@ -21,8 +20,7 @@ public class ProductVo {
 
     private String mainImage;
 
-    private BigDecimal price;
-
     private Integer status;
 
+    private BigDecimal price;
 }

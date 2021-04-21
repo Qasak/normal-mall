@@ -1,7 +1,7 @@
 package com.imooc.mall.service.impl;
 
-import com.imooc.mall.dao.CategoryMapper;
 import com.imooc.mall.dao.UserMapper;
+import com.imooc.mall.enums.ResponseEnum;
 import com.imooc.mall.enums.RoleEnum;
 import com.imooc.mall.pojo.User;
 import com.imooc.mall.service.IUserService;
@@ -15,60 +15,74 @@ import java.nio.charset.StandardCharsets;
 import static com.imooc.mall.enums.ResponseEnum.*;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/10/29 16:12
+ * Created by 廖师兄
  */
 @Service
 public class UserServiceImpl implements IUserService {
 
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 注册
+     *
+     * @param user
      */
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private CategoryMapper categoryMapper;
     @Override
     public ResponseVo<User> register(User user) {
-        // 设置用户角色，否则数据库报错
-        user.setRole(RoleEnum.CUSTOMER.getCode());
-        // 用户名不能重复
+//		error();
+
+        //username不能重复
         int countByUsername = userMapper.countByUsername(user.getUsername());
-        if(countByUsername > 0 ) {
-            return ResponseVo.error(USERNAME_ALREADY_EXIST);
-        }
-        int countByEmail = userMapper.countByEmail(user.getEmail());
-        if(countByEmail > 0 ) {
-            return ResponseVo.error(EMAIL_ALREADY_EXIST);
+        if (countByUsername > 0) {
+            return ResponseVo.error(USERNAME_EXIST);
         }
 
-        // MD5摘要(Spring框架自带)
-        user.setPassword(DigestUtils.md5DigestAsHex(
-                user.getPassword().getBytes(StandardCharsets.UTF_8)));
-        // 写入数据库
+        //email不能重复
+        int countByEmail = userMapper.countByEmail(user.getEmail());
+        if (countByEmail > 0) {
+            return ResponseVo.error(EMAIL_EXIST);
+        }
+
+        user.setRole(RoleEnum.CUSTOMER.getCode());
+        //MD5摘要算法(Spring自带)
+        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes(StandardCharsets.UTF_8)));
+
+        //写入数据库
         int resultCount = userMapper.insertSelective(user);
-        if(resultCount == 0) {
+        if (resultCount == 0) {
             return ResponseVo.error(ERROR);
         }
+
         return ResponseVo.success();
     }
+
     @Override
-    public ResponseVo login(String username, String password) {
-        // 数据库中username有索引，只用一个字段查
+    public ResponseVo<User> login(String username, String password) {
         User user = userMapper.selectByUsername(username);
-        if(user == null) {
-            //用户不存在： 用户名或密码错误
-            return ResponseVo.error(USERNAME_OR_PASSWORD_ERROR);
+        if (user == null) {
+            //用户不存在（返回：用户名或密码错误 ）
+            return ResponseVo.error(ResponseEnum.USERNAME_OR_PASSWORD_ERROR);
         }
 
-        if (!user.getPassword().equalsIgnoreCase(DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8)))){
-            // 密码错误： 用户名或密码错误
-            return ResponseVo.error(USERNAME_OR_PASSWORD_ERROR);
+        if (!user.getPassword().equalsIgnoreCase(DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8)))) {
+            //密码错误(返回：用户名或密码错误 )
+            return ResponseVo.error(ResponseEnum.USERNAME_OR_PASSWORD_ERROR);
         }
-        // 不要向前端返回用户密码
+
         user.setPassword("");
         return ResponseVo.success(user);
+    }
+
+    private void error() {
+        throw new RuntimeException("意外错误");
+    }
+
+    public static void main(String[] args) {
+        String passWord = "admin";
+        // 21232F297A57A5A743894A0E4A801FC3
+
+        // 21232f297a57a5a743894a0e4a801fc3
+        System.out.println(DigestUtils.md5DigestAsHex(passWord.getBytes(StandardCharsets.UTF_8)));
     }
 }

@@ -5,14 +5,14 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/10/30 10:50
+ * Created by 廖师兄
  */
 @Data
 public class UserLoginForm {
-    @NotBlank()
+
+    @NotBlank
     private String username;
-    @NotBlank()
+
+    @NotBlank
     private String password;
 }

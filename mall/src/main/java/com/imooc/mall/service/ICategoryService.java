@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/10/30 20:22
+ * Created by 廖师兄
  */
 public interface ICategoryService {
+
     ResponseVo<List<CategoryVo>> selectAll();
+
     void findSubCategoryId(Integer id, Set<Integer> resultSet);
 }

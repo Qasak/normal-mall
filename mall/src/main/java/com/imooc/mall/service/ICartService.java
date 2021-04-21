@@ -9,9 +9,7 @@ import com.imooc.mall.vo.ResponseVo;
 import java.util.List;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/11/3 18:07
+ * Created by 廖师兄
  */
 public interface ICartService {
 

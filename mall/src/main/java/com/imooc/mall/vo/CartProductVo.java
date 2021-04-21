@@ -5,13 +5,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/11/3 17:54
- */
-
-/**
- * 返给前端的单个购物车中的物品
+ * Created by 廖师兄
  */
 @Data
 public class CartProductVo {

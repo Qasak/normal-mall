@@ -3,9 +3,7 @@ package com.imooc.mall.pojo;
 import lombok.Data;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/11/3 18:10
+ * Created by 廖师兄
  */
 @Data
 public class Cart {
@@ -25,4 +23,3 @@ public class Cart {
         this.productSelected = productSelected;
     }
 }
-

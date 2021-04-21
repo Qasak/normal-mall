@@ -1,11 +1,9 @@
 package com.imooc.mall.dao;
 
 import com.imooc.mall.pojo.Category;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
 public interface CategoryMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -20,5 +18,4 @@ public interface CategoryMapper {
     int updateByPrimaryKey(Category record);
 
     List<Category> selectAll();
-
 }

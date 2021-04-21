@@ -1,26 +1,26 @@
 package com.imooc.mall.enums;
 
+import lombok.Getter;
+
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/10/30 10:28
+ * Created by 廖师兄
  */
+@Getter
 public enum ResponseEnum {
-    ERROR(-1, "服务端异常"),
-    // 所有的成功
+
+    ERROR(-1, "服务端错误"),
+
     SUCCESS(0, "成功"),
 
-    PASSWAORD_ERROR(1, "密码错误"),
+    PASSWORD_ERROR(1, "密码错误"),
 
-    USERNAME_ALREADY_EXIST(2, "用户已经存在"),
+    USERNAME_EXIST(2, "用户名已存在"),
 
-    PARAM_ERROR(3, "注册参数错误"),
+    PARAM_ERROR(3, "参数错误"),
 
-    EMAIL_ALREADY_EXIST(4, "邮箱已经存在"),
+    EMAIL_EXIST(4, "邮箱已存在"),
 
-    NO_CATEGORY(5,"没有该商品类目"),
-
-    NEED_LOGIN(10, "用户未登录，无法获取当前用户信息"),
+    NEED_LOGIN(10, "用户未登录, 请先登录"),
 
     USERNAME_OR_PASSWORD_ERROR(11, "用户名或密码错误"),
 
@@ -43,20 +43,13 @@ public enum ResponseEnum {
     ORDER_STATUS_ERROR(20, "订单状态有误"),
 
     ;
-    private Integer code;
 
-    private String name;
+    Integer code;
 
-    ResponseEnum(Integer code, String name) {
+    String desc;
+
+    ResponseEnum(Integer code, String desc) {
         this.code = code;
-        this.name = name;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
+        this.desc = desc;
     }
 }

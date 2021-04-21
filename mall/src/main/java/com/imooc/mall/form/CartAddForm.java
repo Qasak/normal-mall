@@ -5,9 +5,8 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/11/3 17:56
+ * 添加商品
+ * Created by 廖师兄
  */
 @Data
 public class CartAddForm {
@@ -17,4 +16,3 @@ public class CartAddForm {
 
     private Boolean selected = true;
 }
-

@@ -5,12 +5,21 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/10/30 20:19
+ * Created by 廖师兄
  */
 @Data
 public class CategoryVo {
+    @Override
+    public String toString() {
+        return "CategoryVo{" +
+                "id=" + id +
+                ", parentId=" + parentId +
+                ", name='" + name + '\'' +
+                ", sortOrder=" + sortOrder +
+                ", subCategories=" + subCategories +
+                '}';
+    }
+
     private Integer id;
 
     private Integer parentId;

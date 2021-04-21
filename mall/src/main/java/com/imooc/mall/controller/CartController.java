@@ -1,6 +1,6 @@
 package com.imooc.mall.controller;
 
-import com.imooc.mall.consts.MallConsts;
+import com.imooc.mall.consts.MallConst;
 import com.imooc.mall.form.CartAddForm;
 import com.imooc.mall.form.CartUpdateForm;
 import com.imooc.mall.pojo.User;
@@ -14,9 +14,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/11/3 17:58
+ * Created by 廖师兄
  */
 @RestController
 public class CartController {
@@ -26,14 +24,14 @@ public class CartController {
 
     @GetMapping("/carts")
     public ResponseVo<CartVo> list(HttpSession session) {
-        User user = (User) session.getAttribute(MallConsts.CURRENT_USER);
+        User user = (User) session.getAttribute(MallConst.CURRENT_USER);
         return cartService.list(user.getId());
     }
 
     @PostMapping("/carts")
     public ResponseVo<CartVo> add(@Valid @RequestBody CartAddForm cartAddForm,
                                   HttpSession session) {
-        User user = (User) session.getAttribute(MallConsts.CURRENT_USER);
+        User user = (User) session.getAttribute(MallConst.CURRENT_USER);
         return cartService.add(user.getId(), cartAddForm);
     }
 
@@ -41,32 +39,32 @@ public class CartController {
     public ResponseVo<CartVo> update(@PathVariable Integer productId,
                                      @Valid @RequestBody CartUpdateForm form,
                                      HttpSession session) {
-        User user = (User) session.getAttribute(MallConsts.CURRENT_USER);
+        User user = (User) session.getAttribute(MallConst.CURRENT_USER);
         return cartService.update(user.getId(), productId, form);
     }
 
     @DeleteMapping("/carts/{productId}")
     public ResponseVo<CartVo> delete(@PathVariable Integer productId,
                                      HttpSession session) {
-        User user = (User) session.getAttribute(MallConsts.CURRENT_USER);
+        User user = (User) session.getAttribute(MallConst.CURRENT_USER);
         return cartService.delete(user.getId(), productId);
     }
 
     @PutMapping("/carts/selectAll")
     public ResponseVo<CartVo> selectAll(HttpSession session) {
-        User user = (User) session.getAttribute(MallConsts.CURRENT_USER);
+        User user = (User) session.getAttribute(MallConst.CURRENT_USER);
         return cartService.selectAll(user.getId());
     }
 
     @PutMapping("/carts/unSelectAll")
     public ResponseVo<CartVo> unSelectAll(HttpSession session) {
-        User user = (User) session.getAttribute(MallConsts.CURRENT_USER);
+        User user = (User) session.getAttribute(MallConst.CURRENT_USER);
         return cartService.unSelectAll(user.getId());
     }
 
     @GetMapping("/carts/products/sum")
     public ResponseVo<Integer> sum(HttpSession session) {
-        User user = (User) session.getAttribute(MallConsts.CURRENT_USER);
+        User user = (User) session.getAttribute(MallConst.CURRENT_USER);
         return cartService.sum(user.getId());
     }
 }

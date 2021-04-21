@@ -6,12 +6,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @author Wangjs
- * @version 1.0
- * @date 2020/11/3 17:04
+ * Created by 廖师兄
  */
 @Data
 public class ProductDetailVo {
+
     private Integer id;
 
     private Integer categoryId;

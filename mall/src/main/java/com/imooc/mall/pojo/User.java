@@ -1,5 +1,6 @@
 package com.imooc.mall.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
@@ -26,13 +27,13 @@ public class User {
 
     private Date updateTime;
 
+    public User() {
+    }
+
     public User(String username, String password, String email, Integer role) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
-    }
-
-    public User() {
     }
 }
